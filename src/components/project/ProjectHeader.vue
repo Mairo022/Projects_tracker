@@ -1,8 +1,8 @@
 <template>
-  <header class="project__header">
-    <h2 class="header__title">{{name}}</h2>
-    <a class="header__link" href="">Live</a>
-    <a class="header__link" href="">GitHub</a>
+  <header>
+    <h2>{{name}}</h2>
+    <a href="">Live</a>
+    <a href="">GitHub</a>
   </header>
 </template>
 

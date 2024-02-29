@@ -1,5 +1,5 @@
 <template>
-  <article class="project__content">
+  <article class="rounded-md border-2 border-[#3e3e47]">
     {{title}}
     <table>
       <thead>
@@ -26,5 +26,3 @@ export default {
   name: "ProjectContent"
 }
 </script>
-
-<style scoped src="./ProjectContent.css"></style>
