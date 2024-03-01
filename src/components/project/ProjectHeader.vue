@@ -1,8 +1,9 @@
 <template>
-  <header>
-    <h2>{{name}}</h2>
-    <a href="">Live</a>
-    <a href="">GitHub</a>
+  <header class="flex items-center mb-3">
+    <h2 class="text-xl font-medium">{{name}}</h2>
+    <span class="mx-4 pb-[2px]">—</span>
+    <a class="hover:text-linkhover" href="">Live,&nbsp;</a>
+    <a class="hover:text-linkhover" href="">GitHub</a>
   </header>
 </template>
 

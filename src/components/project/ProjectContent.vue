@@ -1,23 +1,40 @@
+<script setup>
+import {
+  Table,
+  TableBody,
+  TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table'
+</script>
 <template>
-  <article class="rounded-md border-2 border-[#3e3e47]">
-    {{title}}
-    <table>
-      <thead>
-        <tr>
-          <th>Title</th>
-          <th>Created</th>
-          <th>V</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>Fix pagination of drivers & sessions</td>
-          <td>1d</td>
-          <td>V</td>
-        </tr>
-      </tbody>
-    </table>
-  </article>
+  <h3 class="text-base border-b py-3 mb-5">To-do</h3>
+    <Table>
+      <TableHeader>
+        <TableRow>
+          <TableHead>
+            Title
+          </TableHead>
+          <TableHead class="text-right w-[100px]">Created</TableHead>
+          <TableHead class="text-right w-[100px]">
+            Done
+          </TableHead>
+        </TableRow>
+      </TableHeader>
+      <TableBody class="text-base">
+        <TableRow>
+          <TableCell class="font-medium">
+            Add endpoint for best sector times
+          </TableCell>
+          <TableCell class="text-right text-primary">1h</TableCell>
+          <TableCell class="text-right text-[#6ec075] cursor-pointer transition-colors hover:bg-muted/50">
+            ✓
+          </TableCell>
+        </TableRow>
+      </TableBody>
+    </Table>
 </template>
 
 <script>
