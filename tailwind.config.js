@@ -22,6 +22,7 @@ module.exports = {
     },
     extend: {
       colors: {
+        linkhover: "hsl(var(--link-hover))",
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
