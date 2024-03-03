@@ -10,6 +10,17 @@ import {
 } from '@/components/ui/select'
 import { Label } from '@/components/ui/label'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 </script>
 
 <template>
@@ -20,7 +31,26 @@ import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel class="border-b pb-3 mb-1">Projects</SelectLabel>
+          <SelectLabel class="border-b pb-3">Projects</SelectLabel>
+          <Dialog>
+            <SelectLabel class="border-b py-0 px-0 mb-1 font-medium">
+              <DialogTrigger as-child>
+                <button class="pl-8 py-1.5 my-1 w-full hover:bg-accent text-left">Add project</button>
+              </DialogTrigger>
+            </SelectLabel>
+            <DialogContent class="max-w-sm">
+              <DialogHeader>
+                <DialogTitle>Add project</DialogTitle>
+                <div class="flex items-center gap-4 mt-6 mb-2">
+                  <Input id="name" class="rounded" placeholder="Project name" />
+                </div>
+              </DialogHeader>
+              <DialogFooter>
+                <Button type="submit" class="rounded">Confirm</Button>
+              </DialogFooter>
+            </DialogContent>
+          </Dialog>
+
           <SelectItem value="apple" class="cursor-pointer">
             Apple
           </SelectItem>
