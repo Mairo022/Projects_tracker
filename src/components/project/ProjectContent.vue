@@ -8,9 +8,15 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+
+const props = defineProps({
+  view: { type: String, required: true },
+  projectId: { type: Number, required: false}
+})
+
 </script>
 <template>
-  <h3 class="text-base border-b py-3 mb-5">To-do</h3>
+  <h3 class="text-base border-b py-3 mb-5">{{view}}</h3>
     <Table>
       <TableHeader>
         <TableRow>
@@ -36,10 +42,3 @@ import {
       </TableBody>
     </Table>
 </template>
-
-<script>
-export default {
-  props: ['title'],
-  name: "ProjectContent"
-}
-</script>

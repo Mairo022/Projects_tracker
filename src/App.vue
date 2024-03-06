@@ -1,18 +1,31 @@
 <script setup>
+import { ref } from 'vue'
 import ProjectHeader from "./components/project/ProjectHeader.vue"
 import ProjectContent from "./components/project/ProjectContent.vue";
 import MenuContent from "./components/menu/MenuContent.vue";
 import MenuHeader from "./components/menu/MenuHeader.vue";
+
+let projectView = ref("")
+let projectActive = ref()
+
+function updateView(view) {
+  projectView.value = view
+}
+
+function updateProject(id) {
+  projectActive.value = id
+}
+
 </script>
 <template>
   <main class="flex flex-wrap gap-6 w-[90%] max-w-[1400px] max-h-fit mx-auto pt-[300px]">
     <nav class="basis-[20%] bg-card px-6 py-4  border-2 rounded">
       <MenuHeader/>
-      <MenuContent/>
+      <MenuContent @update:view="updateView" @update:project="updateProject"/>
     </nav>
     <section class="grow bg-card px-6 py-4 border-2 rounded">
       <ProjectHeader name="Driveclub"/>
-      <ProjectContent title="To-do"/>
+      <ProjectContent :view="projectView" :projectId="projectActive"/>
     </section>
   </main>
 </template>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, watch } from 'vue'
+import { ref } from 'vue'
 import {
   Select,
   SelectContent,
@@ -23,11 +23,29 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
+import {projects} from '@/data/projects'
+
+const emits = defineEmits(['update:project', 'update:view'])
 
 let isOpen = ref(false)
 let inputProjectName = ""
 
-function changeOpenState() {
+let projectActive = null
+let projectView = ref()
+
+function updateProjectView(view) {
+  projectView.value = view
+  emits('update:view', view)
+}
+
+function updateProjectActive(id) {
+  projectActive = id
+  projectView.value = "todo"
+  emits('update:view', "todo")
+  emits('update:project', id)
+}
+
+function updateOpenState() {
   isOpen.value = !isOpen.value
 }
 
@@ -45,14 +63,14 @@ function handleAddProjectSubmit() {
 
 <template>
   <div class="border-b pb-3 mb-3">
-    <Select>
+    <Select @update:modelValue="updateProjectActive">
       <SelectTrigger>
         <SelectValue placeholder="Select a project" />
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
           <SelectLabel class="border-b pb-3">Projects</SelectLabel>
-          <Dialog :open="isOpen" @update:open="changeOpenState">
+          <Dialog :open="isOpen" @update:open="updateOpenState">
             <SelectLabel class="border-b py-0 px-0 mb-1 font-medium">
               <DialogTrigger as-child>
                 <button class="pl-8 py-1.5 my-1 w-full hover:bg-accent text-left">Add project</button>
@@ -70,42 +88,29 @@ function handleAddProjectSubmit() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-
-          <SelectItem value="apple" class="cursor-pointer">
-            Apple
-          </SelectItem>
-          <SelectItem value="banana" class="cursor-pointer">
-            Banana
-          </SelectItem>
-          <SelectItem value="blueberry" class="cursor-pointer">
-            Blueberry
-          </SelectItem>
-          <SelectItem value="grapes" class="cursor-pointer">
-            Grapes
-          </SelectItem>
-          <SelectItem value="pineapple" class="cursor-pointer">
-            Pineapple
+          <SelectItem v-for="project in projects" :value="project.id.toString()" class="cursor-pointer">
+            {{ project.name }}
           </SelectItem>
         </SelectGroup>
       </SelectContent>
     </Select>
   </div>
-  <RadioGroup class="px-1" default-value="option-one">
+  <RadioGroup class="px-1" default-value="option-one" :modelValue="projectView" @update:modelValue="updateProjectView">
     <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="option-one" value="option-one" />
-      <Label class="cursor-pointer w-full" for="option-one">To-Do</Label>
+      <RadioGroupItem id="todo" value="todo" />
+      <Label class="cursor-pointer w-full" for="todo">To-Do</Label>
     </div>
     <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="option-two" value="option-two" />
-      <Label class="cursor-pointer w-full" for="option-two">Bugs</Label>
+      <RadioGroupItem id="bugs" value="bugs" />
+      <Label class="cursor-pointer w-full" for="bugs">Bugs</Label>
     </div>
     <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="option-four" value="option-four" />
-      <Label class="cursor-pointer w-full" for="option-four">Ideas</Label>
+      <RadioGroupItem id="ideas" value="ideas" />
+      <Label class="cursor-pointer w-full" for="ideas">Ideas</Label>
     </div>
     <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="option-five" value="option-five" />
-      <Label class="cursor-pointer w-full" for="option-five">History</Label>
+      <RadioGroupItem id="history" value="history" />
+      <Label class="cursor-pointer w-full" for="history">History</Label>
     </div>
   </RadioGroup>
 </template>
