@@ -26,6 +26,7 @@ import {
 import {projects} from '@/data/projects'
 
 const emits = defineEmits(['update:project', 'update:view'])
+const views = ["To-do", "Bugs", "Ideas", "History"]
 
 let isOpen = ref(false)
 let inputProjectName = ""
@@ -40,8 +41,8 @@ function updateProjectView(view) {
 
 function updateProjectActive(id) {
   projectActive = id
-  projectView.value = "todo"
-  emits('update:view', "todo")
+  projectView.value = views[0]
+  emits('update:view', views[0])
   emits('update:project', id)
 }
 
@@ -96,21 +97,9 @@ function handleAddProjectSubmit() {
     </Select>
   </div>
   <RadioGroup class="px-1" default-value="option-one" :modelValue="projectView" @update:modelValue="updateProjectView">
-    <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="todo" value="todo" />
-      <Label class="cursor-pointer w-full" for="todo">To-Do</Label>
-    </div>
-    <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="bugs" value="bugs" />
-      <Label class="cursor-pointer w-full" for="bugs">Bugs</Label>
-    </div>
-    <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="ideas" value="ideas" />
-      <Label class="cursor-pointer w-full" for="ideas">Ideas</Label>
-    </div>
-    <div class="flex items-center space-x-2 h-5">
-      <RadioGroupItem id="history" value="history" />
-      <Label class="cursor-pointer w-full" for="history">History</Label>
+    <div v-for="view in views" class="flex items-center space-x-2 h-5">
+      <RadioGroupItem :id="view" :value="view" />
+      <Label class="cursor-pointer w-full" :for="view">{{view}}</Label>
     </div>
   </RadioGroup>
 </template>
