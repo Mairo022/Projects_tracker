@@ -8,11 +8,30 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import { ref, watch } from 'vue'
+import { projectsData } from '@/data/projectsData'
 
 const props = defineProps({
   view: { type: String, required: true },
   projectId: { type: Number, required: false}
 })
+
+let projectData = ref(null)
+
+function translateView(view) {
+  const viewValues = new Map([
+      ["To-do", "todo"],
+      ["Bugs", "bugs"],
+      ["Ideas", "ideas"],
+      ["History", "history"]
+  ])
+
+  return viewValues.get(view)
+}
+
+watch(props, () => {
+  projectData.value = projectsData.get(props.projectId)[translateView(props.view)]
+}, { immediate: true })
 
 </script>
 <template>
@@ -30,11 +49,11 @@ const props = defineProps({
         </TableRow>
       </TableHeader>
       <TableBody class="text-base">
-        <TableRow>
+        <TableRow v-for="item in projectData" :data-id="item.id">
           <TableCell class="font-medium">
-            Add endpoint for best sector times
+            {{item.title}}
           </TableCell>
-          <TableCell class="text-right text-primary">1h</TableCell>
+          <TableCell class="text-right text-primary">{{item.created}}</TableCell>
           <TableCell class="text-right text-[#6ec075] cursor-pointer transition-colors hover:bg-muted/50">
             ✓
           </TableCell>

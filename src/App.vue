@@ -4,6 +4,7 @@ import ProjectHeader from "./components/project/ProjectHeader.vue"
 import ProjectContent from "./components/project/ProjectContent.vue";
 import MenuContent from "./components/menu/MenuContent.vue";
 import MenuHeader from "./components/menu/MenuHeader.vue";
+import { projectsData } from '@/data/projectsData'
 
 let projectView = ref("")
 let projectActive = ref()
@@ -13,7 +14,7 @@ function updateView(view) {
 }
 
 function updateProject(id) {
-  projectActive.value = id
+  projectActive.value = parseInt(id)
 }
 
 </script>
@@ -24,8 +25,10 @@ function updateProject(id) {
       <MenuContent @update:view="updateView" @update:project="updateProject"/>
     </nav>
     <section class="grow bg-card px-6 py-4 border-2 rounded">
-      <ProjectHeader name="Driveclub"/>
-      <ProjectContent :view="projectView" :projectId="projectActive"/>
+      <div v-if="projectsData.get(projectActive)">
+        <ProjectHeader :projectId="projectActive"/>
+        <ProjectContent :view="projectView" :projectId="projectActive"/>
+      </div>
     </section>
   </main>
 </template>

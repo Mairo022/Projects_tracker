@@ -1,9 +1,3 @@
-export const projectsData = new Map([
-    [0, driveclubSiteInfo],
-    [1, jobsInfo],
-    [2, projectsInfo]
-])
-
 const projectsInfo = {
     todo: [
         {
@@ -105,7 +99,7 @@ const driveclubSiteInfo = {
             title: "Change theme and layout",
             created: new Date('2024-01-21T17:22:00')
         }
-    ]
+    ],
     history: [
         {
             id: 11,
@@ -127,3 +121,9 @@ const driveclubSiteInfo = {
         }
     ]
 }
+
+export const projectsData = new Map([
+    [0, driveclubSiteInfo],
+    [1, jobsInfo],
+    [2, projectsInfo]
+])
