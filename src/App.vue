@@ -19,7 +19,7 @@ function updateProject(id) {
 
 </script>
 <template>
-  <main class="flex flex-wrap gap-6 w-[90%] max-w-[1400px] max-h-fit mx-auto pt-[300px]">
+  <main class="flex flex-wrap gap-6 w-[90%] max-w-[1400px] max-h-fit mx-auto py-[300px]">
     <nav class="basis-[20%] bg-card px-6 py-4  border-2 rounded">
       <MenuHeader/>
       <MenuContent @update:view="updateView" @update:project="updateProject"/>
