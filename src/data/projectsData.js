@@ -1,3 +1,10 @@
+export const projectTemplate = {
+    todo: [],
+    bugs: [],
+    ideas: [],
+    history: []
+}
+
 const projectsInfo = {
     todo: [
         {

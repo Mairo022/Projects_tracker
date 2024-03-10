@@ -24,6 +24,7 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog'
 import {projects} from '@/data/projects'
+import {projectsData, projectTemplate} from '@/data/projectsData'
 
 const emits = defineEmits(['update:project', 'update:view'])
 const views = ["To-do", "Bugs", "Ideas", "History"]
@@ -33,6 +34,8 @@ let inputProjectName = ""
 
 let projectActive = null
 let projectView = ref()
+
+let dialogDescriptionData = ref({class: "", text: ""})
 
 function updateProjectView(view) {
   projectView.value = view
@@ -48,6 +51,10 @@ function updateProjectActive(id) {
 
 function updateOpenState() {
   isOpen.value = !isOpen.value
+
+  if (!isOpen.value) {
+    dialogDescriptionData.value = {text: '', class: ''}
+  }
 }
 
 function handleAddProjectSubmit() {
@@ -57,7 +64,27 @@ function handleAddProjectSubmit() {
 
   if (projectName === "") return
 
-  isOpen.value = false
+  const isNameTaken = projects.some(project => project.name === projectName)
+
+  if (isNameTaken) {
+    dialogDescriptionData.value = {
+      text: 'Name is in use',
+      class: 'text-[#E3545B]'
+    }
+    return
+  }
+
+  projects.push({id: projects.length, name: projectName})
+  projectsData.set(projectsData.size, projectTemplate)
+
+  dialogDescriptionData.value = {
+    text: `Added ${projectName}`,
+    class: 'text-[#6ec075]'
+  }
+
+  setTimeout(() => {
+    isOpen.value = false
+  }, 450)
 }
 
 </script>
@@ -80,6 +107,9 @@ function handleAddProjectSubmit() {
             <DialogContent class="max-w-sm">
               <DialogHeader>
                 <DialogTitle>Add project</DialogTitle>
+                <DialogDescription class="absolute top-11" :class="dialogDescriptionData.class">
+                  {{dialogDescriptionData.text}}
+                </DialogDescription>
                 <div class="flex items-center gap-4 mt-6 mb-2">
                   <Input v-model="inputProjectName" id="name" class="rounded" placeholder="Project name" />
                 </div>
