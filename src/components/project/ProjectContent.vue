@@ -8,8 +8,22 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
 import { ref, watch } from 'vue'
 import { projectsData } from '@/data/projectsData'
+import { projects } from '@/data/projects'
 
 const props = defineProps({
   view: { type: String, required: true },
@@ -17,6 +31,31 @@ const props = defineProps({
 })
 
 let projectData = ref(null)
+let projectName = projects.find(project => project.id === props.projectId).name
+
+let isOpen = ref(false)
+let inputTaskTitle = ref("")
+let inputTaskDescription = ref("")
+
+function updateOpenState() {
+  isOpen.value = !isOpen.value
+}
+
+function handleAddTaskSubmit() {
+  const inputTitle = inputTaskTitle.value
+  const inputDescription = inputTaskDescription.value
+
+  if (inputTitle === "") return
+  if (inputTitle.trim() === "") return
+
+  projectData.value.unshift(
+      {
+        id: Math.round(Math.random() * 100 + 50),
+        title: inputTitle,
+        created: new Date()
+      }
+  )
+}
 
 function translateView(view) {
   const viewValues = new Map([
@@ -53,9 +92,43 @@ watch(props, () => {
   projectData.value = projectsData.get(props.projectId)[translateView(props.view)]
 }, { immediate: true })
 
+watch(isOpen, () => {
+  if (!isOpen.value) {
+    setTimeout(() => {
+      inputTaskTitle.value = ""
+      inputTaskDescription.value = ""
+    }, 200)
+  }
+})
+
 </script>
 <template>
-  <h3 class="text-base border-b py-3 mb-5">{{view}}</h3>
+  <div class="text-base border-b py-2">
+    <h3 class="inline-block">{{view}}</h3>
+    <Dialog :open="isOpen" @update:open="updateOpenState">
+      <DialogTrigger as-child>
+        <Button class="float-right ml-auto hover:bg-muted/50 px-2 mt-[-0.5rem] text-primary rounded-t-[2px] bg-transparent">+ Add item</Button>
+      </DialogTrigger>
+      <DialogContent class="max-w-base">
+        <DialogHeader>
+          <DialogTitle>{{projectName}}</DialogTitle>
+          <DialogDescription class="pb-1">
+            Adding task
+          </DialogDescription>
+          <div class="flex flex-col items-center gap-4 mb-2">
+            <Input class="rounded" v-model="inputTaskTitle" id="inputTaskTitle" placeholder="Title" />
+            <Textarea rows="4" v-model="inputTaskDescription" class="resize-none rounded" placeholder="Description"/>
+          </div>
+        </DialogHeader>
+        <DialogFooter>
+          <DialogClose>
+            <Button class="rounded">Close</Button>
+          </DialogClose>
+          <Button @click="handleAddTaskSubmit" type="submit" class="rounded">Add</Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  </div>
     <Table>
       <TableHeader>
         <TableRow>
