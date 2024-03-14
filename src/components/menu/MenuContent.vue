@@ -97,11 +97,10 @@ function handleAddProjectSubmit() {
       </SelectTrigger>
       <SelectContent>
         <SelectGroup>
-          <SelectLabel class="border-b pb-3">Projects</SelectLabel>
           <Dialog :open="isOpen" @update:open="updateOpenState">
             <SelectLabel class="border-b py-0 px-0 mb-1 font-medium">
               <DialogTrigger as-child>
-                <button class="pl-8 py-1.5 my-1 w-full hover:bg-accent text-left">Add project</button>
+                <button class="pl-8 mb-2 py-1 w-full hover:bg-accent text-left">Add project</button>
               </DialogTrigger>
             </SelectLabel>
             <DialogContent class="max-w-sm">

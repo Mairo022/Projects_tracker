@@ -132,36 +132,36 @@ watch(isTaskOpen, () => {
 
 </script>
 <template>
-  <div class="text-base border-b py-2">
-    <h3 class="inline-block">{{view}}</h3>
-    <Button @click="updateAddTaskOpenState" class="float-right ml-auto hover:bg-muted/50 px-2 mt-[-0.5rem] text-primary rounded-t-[2px] bg-transparent">
+  <div class="text-base border-b-2 border-[#36363C] px-1 pb-2 mt-[-7px] mb-5">
+    <h3 class="inline-block font-medium text-lg text-[#DDD] mb-1">{{view}}</h3>
+    <Button @click="updateAddTaskOpenState" class="float-right hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
       + Add item
     </Button>
   </div>
-    <Table>
-      <TableHeader>
-        <TableRow>
-          <TableHead>
-            Title
-          </TableHead>
-          <TableHead class="text-right w-[100px]">Created</TableHead>
-          <TableHead class="text-right w-[100px]">
-            Done
-          </TableHead>
-        </TableRow>
-      </TableHeader>
-      <TableBody class="text-base">
-        <TableRow v-for="item in projectData" :data-id="item.id">
-          <TableCell class="font-medium cursor-pointer" @click="updateTaskOpenState(item.id)">
-            {{item.title}}
-          </TableCell>
-          <TableCell class="text-right text-primary">{{createdTime(item.created)}}</TableCell>
-          <TableCell class="text-right text-[#6ec075] cursor-pointer transition-colors hover:bg-muted/50">
-            ✓
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+  <Table class="w-[98%] mx-auto table-fixed" >
+    <TableHeader>
+      <TableRow class="hover:bg-transparent">
+        <TableHead class="px-2 text-[#AAAAAA] border-[#36363C] border-b-2">
+          Title
+        </TableHead>
+        <TableHead class="px-3 text-[#AAAAAA] text-right w-[100px] border-[#36363C] border-b-2">Created</TableHead>
+        <TableHead class="px-3 text-[#AAAAAA] text-right w-[100px] border-[#36363C] border-b-2">
+          Done
+        </TableHead>
+      </TableRow>
+    </TableHeader>
+    <TableBody class="text-base">
+      <TableRow v-for="item in projectData" :data-id="item.id" class="border-0 leading-[14px]">
+        <TableCell class="px-3 border-b-2 cursor-pointer text-primary rounded-l-[4px]" @click="updateTaskOpenState(item.id)">
+          {{item.title}}
+        </TableCell>
+        <TableCell class="px-3 border-b-2 text-right text-secondary">{{createdTime(item.created)}}</TableCell>
+        <TableCell class="px-3 border-b-2 text-right text-[#6ec075] rounded-r-[4px] cursor-pointer transition-colors hover:bg-muted/50">
+          ✓
+        </TableCell>
+      </TableRow>
+    </TableBody>
+  </Table>
 
   <Dialog :open="isTaskOpen" @update:open="updateTaskOpenState">
     <DialogContent class="max-w-base">
