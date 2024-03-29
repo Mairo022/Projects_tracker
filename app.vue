@@ -1,10 +1,7 @@
 <script setup>
-import { ref } from 'vue'
-import ProjectHeader from "./components/project/ProjectHeader.vue"
-import ProjectContent from "./components/project/ProjectContent.vue";
-import MenuContent from "./components/menu/MenuContent.vue";
-import MenuHeader from "./components/menu/MenuHeader.vue";
 import { projectsData } from '@/data/projectsData'
+import '@/assets/css/base.css'
+import '@/assets/css/main.css'
 
 let projectView = ref("")
 let projectActive = ref()
@@ -16,7 +13,6 @@ function updateView(view) {
 function updateProject(id) {
   projectActive.value = parseInt(id)
 }
-
 </script>
 <template>
   <main class="flex flex-wrap gap-6 w-[90%] max-w-[1200px] mx-auto relative top-[33%]">
@@ -32,4 +28,3 @@ function updateProject(id) {
     </section>
   </main>
 </template>
-
