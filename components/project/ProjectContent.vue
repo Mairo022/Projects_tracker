@@ -121,12 +121,12 @@ watch(isAddTaskOpen, () => {
 watch(isTaskOpen, () => {
   if (isTaskOpen.value && taskId != null) {
     const task = projectData.value.find(task => task.id === taskId.value)
-    inputTaskTitle = task.title
-    inputTaskDescription = task.description
+    inputTaskTitle.value = task.title
+    inputTaskDescription.value = task.description
   }
   if (!isTaskOpen.value) {
-    inputTaskTitle = ""
-    inputTaskDescription = ""
+    inputTaskTitle.value = ""
+    inputTaskDescription.value = ""
   }
 })
 
