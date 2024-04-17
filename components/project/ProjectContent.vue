@@ -1,8 +1,11 @@
 <script setup>
-const { projectId, tasks } = defineProps({
+const props = defineProps({
   projectId: { type: Number, required: true },
   tasks: { type: Array, required: true }
 })
+
+const id = props.projectId
+const tasks = props.tasks
 
 const todos = tasks?.filter(task => task.type === "todo" && !task.completed)
 const bugs = tasks?.filter(task => task.type === "bug" && !task.completed)
@@ -17,18 +20,10 @@ let inputTaskDescription = ref("")
 let taskId = ref(null)
 let taskTitle = ref(undefined)
 
-function updateAddTaskOpenState() {
-  isAddTaskOpen.value = !isAddTaskOpen.value
-}
+const isOpenAddTask = ref(false)
 
-function handleAddTaskSubmit() {
-  const inputTitle = inputTaskTitle.value
-  const inputDescription = inputTaskDescription.value
-
-  if (inputTitle === "") return
-  if (inputTitle.trim() === "") return
-
-  updateAddTaskOpenState()
+function updateOpenAddTask() {
+  isOpenAddTask.value = !isOpenAddTask.value
 }
 
 function updateTaskOpenState(id) {
@@ -76,13 +71,12 @@ watch(isTaskOpen, () => {
     inputTaskDescription.value = ""
   }
 })
-
 </script>
 <template>
   <div class="text-base border-b-2 border-[#36363C] px-1 pb-2 mt-[-7px] mb-5">
     <h3 class="inline-block font-medium text-lg text-[#DDD] mb-1">{{}}</h3>
-    <Button @click="updateAddTaskOpenState" class="float-right hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
-      + Add item
+    <Button @click="updateOpenAddTask" class="float-right hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
+      + Add task
     </Button>
   </div>
   <Table class="w-[98%] mx-auto table-fixed" >
@@ -126,25 +120,5 @@ watch(isTaskOpen, () => {
       </DialogFooter>
     </DialogContent>
   </Dialog>
-
-  <Dialog :open="isAddTaskOpen" @update:open="updateAddTaskOpenState">
-    <DialogContent class="max-w-base">
-      <DialogHeader>
-        <DialogTitle>{{projectName}}</DialogTitle>
-        <DialogDescription class="pb-1">
-          Adding task
-        </DialogDescription>
-        <div class="flex flex-col items-center gap-4 mb-2">
-          <Input class="rounded" v-model="inputTaskTitle" placeholder="Title" />
-          <Textarea rows="4" v-model="inputTaskDescription" class="resize-none rounded" placeholder="Description"/>
-        </div>
-      </DialogHeader>
-      <DialogFooter>
-        <DialogClose>
-          <Button class="rounded">Close</Button>
-        </DialogClose>
-        <Button @click="handleAddTaskSubmit" type="submit" class="rounded">Add</Button>
-      </DialogFooter>
-    </DialogContent>
-  </Dialog>
+  <ProjectTaskAddDialog view="task" :id="id" :isOpen="isOpenAddTask" @update:open="updateOpenAddTask"/>
 </template>
