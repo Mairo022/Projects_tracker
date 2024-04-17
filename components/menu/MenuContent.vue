@@ -1,97 +1,62 @@
 <script setup>
-import { ref } from 'vue'
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select'
-import { Label } from '@/components/ui/label'
-import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import {projects} from '@/data/projects'
-import {projectsData, projectTemplate} from '@/data/projectsData'
+const { data : projects } = await useFetch('/api/projects')
 
-const emits = defineEmits(['update:project', 'update:view'])
 const views = ["To-do", "Bugs", "Ideas", "History"]
 
 let isOpen = ref(false)
 let inputProjectName = ""
 
-let projectActive = null
 let projectView = ref()
 
 let dialogDescriptionData = ref({class: "", text: ""})
 
 function updateProjectView(view) {
   projectView.value = view
-  emits('update:view', view)
-}
-
-function updateProjectActive(id) {
-  projectActive = id
-  projectView.value = views[0]
-  emits('update:view', views[0])
-  emits('update:project', id)
 }
 
 function updateOpenState() {
   isOpen.value = !isOpen.value
 
   if (!isOpen.value) {
-    dialogDescriptionData.value = {text: '', class: ''}
+    dialogDescriptionData.value = {
+      text: '',
+      class: ''
+    }
   }
 }
 
-function handleAddProjectSubmit() {
-  if (inputProjectName === "") return
-
-  const projectName = inputProjectName.trim()
-
-  if (projectName === "") return
-
-  const isNameTaken = projects.some(project => project.name === projectName)
-
-  if (isNameTaken) {
-    dialogDescriptionData.value = {
-      text: 'Name is in use',
-      class: 'text-[#E3545B]'
-    }
+async function handleAddProjectSubmit() {
+  if (isEmptyString(inputProjectName)) {
     return
   }
 
-  projects.push({id: projects.length, name: projectName})
-  projectsData.set(projectsData.size, projectTemplate)
+  try {
+    const res = await $fetch("/api/projects", {
+      method: "post",
+      body: {
+        name: inputProjectName,
+        live: null,
+        source: null
+      }
+    })
 
-  dialogDescriptionData.value = {
-    text: `Added ${projectName}`,
-    class: 'text-[#6ec075]'
+    dialogDescriptionData.value = {
+      text: `Added ${inputProjectName}`,
+      class: 'text-[#6ec075]'
+    }
+
+    setTimeout(() => {
+      isOpen.value = false
+    }, 450)
+  } catch (e) {
+    console.log(e.statusMessage)
   }
-
-  setTimeout(() => {
-    isOpen.value = false
-  }, 450)
 }
-
 </script>
 
 <template>
   <div class="border-b pb-3 mb-3">
-    <Select @update:modelValue="updateProjectActive">
+    <Select>
       <SelectTrigger>
         <SelectValue placeholder="Select a project" />
       </SelectTrigger>
@@ -118,9 +83,11 @@ function handleAddProjectSubmit() {
               </DialogFooter>
             </DialogContent>
           </Dialog>
-          <SelectItem v-for="project in projects" :value="project.id.toString()" class="cursor-pointer">
-            {{ project.name }}
-          </SelectItem>
+            <NuxtLink v-for="project in projects" :to="project.id.toString()">
+              <SelectItem :value="project.id.toString()" class="cursor-pointer">
+                {{ project.name }}
+              </SelectItem>
+            </NuxtLink>
         </SelectGroup>
       </SelectContent>
     </Select>

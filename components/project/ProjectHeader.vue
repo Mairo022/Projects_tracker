@@ -1,18 +1,4 @@
 <script setup>
-import { projects } from '@/data/projects'
-import { ref, watch } from 'vue'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
 
 const props = defineProps({
   projectId: { type: Number, required: false}
@@ -37,9 +23,6 @@ function handleEditProjectSubmit() {
   if (name === "") return
   if (name.trim() === "") return
 
-  const projectIndex = projects.findIndex(project => project.id === props.projectId)
-  projects[projectIndex].name = name
-
   assignInputsToDefault()
   updateOpenState()
 }
@@ -55,10 +38,6 @@ function assignDefaultsToInput() {
   inputLive.value = projectLive.value
   inputGithub.value = projectGithub.value
 }
-
-watch(() => props.projectId, () => {
-  projectName.value = projects.find(project => project.id === props.projectId).name
-}, { immediate: true })
 
 watch(isOpen, () => {
   if (isOpen.value) {

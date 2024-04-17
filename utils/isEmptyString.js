@@ -1,0 +1,1 @@
+export default (str) => str === "" ? true : str.trim() === ""

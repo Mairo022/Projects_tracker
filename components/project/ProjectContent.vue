@@ -1,37 +1,14 @@
 <script setup>
-import {
-  Table,
-  TableBody,
-  TableCaption,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '@/components/ui/table'
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { ref, watch } from 'vue'
-import { projectsData } from '@/data/projectsData'
-import { projects } from '@/data/projects'
-
 const props = defineProps({
-  view: { type: String, required: true },
   projectId: { type: Number, required: false}
 })
 
-let projectData = ref(null)
-let projectName = projects.find(project => project.id === props.projectId).name
+const { data : projectTasks, error, pending } = await useFetch(`/api/projects/${props.projectId}`)
+
+const todos = projectTasks.value.filter(task => task.type === "todo" && !task.completed)
+const bugs = projectTasks.value.filter(task => task.type === "bug" && !task.completed)
+const ideas = projectTasks.value.filter(task => task.type === "idea" && !task.completed)
+const history = projectTasks.value.filter(task => task.completed === true)
 
 let isTaskOpen = ref(false)
 let isAddTaskOpen = ref(false)
@@ -52,37 +29,12 @@ function handleAddTaskSubmit() {
   if (inputTitle === "") return
   if (inputTitle.trim() === "") return
 
-  projectData.value.unshift(
-      {
-        id: Math.round(Math.random() * 100 + 50),
-        title: inputTitle,
-        created: new Date()
-      }
-  )
-
   updateAddTaskOpenState()
-}
-
-function handleRemoveTask(id) {
-  const updatedData = projectData.value.filter(task => task.id !== id)
-  projectData.value = updatedData
-  projectsData.get(props.projectId)[translateView(props.view)] = updatedData
 }
 
 function updateTaskOpenState(id) {
   taskId.value = id
   isTaskOpen.value = !isTaskOpen.value
-}
-
-function translateView(view) {
-  const viewValues = new Map([
-      ["To-do", "todo"],
-      ["Bugs", "bugs"],
-      ["Ideas", "ideas"],
-      ["History", "history"]
-  ])
-
-  return viewValues.get(view)
 }
 
 function createdTime(inputTime) {
@@ -105,10 +57,6 @@ function createdTime(inputTime) {
   return "NULL"
 }
 
-watch(props, () => {
-  projectData.value = projectsData.get(props.projectId)[translateView(props.view)]
-}, { immediate: true })
-
 watch(isAddTaskOpen, () => {
   if (!isAddTaskOpen.value) {
     setTimeout(() => {
@@ -120,7 +68,7 @@ watch(isAddTaskOpen, () => {
 
 watch(isTaskOpen, () => {
   if (isTaskOpen.value && taskId != null) {
-    const task = projectData.value.find(task => task.id === taskId.value)
+    const task = todos.find(task => task.id === taskId.value)
     inputTaskTitle.value = task.title
     inputTaskDescription.value = task.description
   }
@@ -133,7 +81,7 @@ watch(isTaskOpen, () => {
 </script>
 <template>
   <div class="text-base border-b-2 border-[#36363C] px-1 pb-2 mt-[-7px] mb-5">
-    <h3 class="inline-block font-medium text-lg text-[#DDD] mb-1">{{view}}</h3>
+    <h3 class="inline-block font-medium text-lg text-[#DDD] mb-1">{{}}</h3>
     <Button @click="updateAddTaskOpenState" class="float-right hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
       + Add item
     </Button>
@@ -151,11 +99,11 @@ watch(isTaskOpen, () => {
       </TableRow>
     </TableHeader>
     <TableBody class="text-base">
-      <TableRow v-for="item in projectData" :data-id="item.id" class="border-0 leading-[14px]">
+      <TableRow v-for="item in todos" :data-id="item.id" class="border-0 leading-[14px]">
         <TableCell class="px-3 border-b-2 cursor-pointer text-primary rounded-l-[4px]" @click="updateTaskOpenState(item.id)">
           {{item.title}}
         </TableCell>
-        <TableCell class="px-3 border-b-2 text-right text-secondary">{{createdTime(item.created)}}</TableCell>
+        <TableCell class="px-3 border-b-2 text-right text-secondary">{{createdTime(item.created_at)}}</TableCell>
         <TableCell class="px-3 border-b-2 text-right text-[#6ec075] rounded-r-[4px] cursor-pointer transition-colors hover:bg-muted/50">
           ✓
         </TableCell>
@@ -172,7 +120,7 @@ watch(isTaskOpen, () => {
         </div>
       </DialogHeader>
       <DialogFooter>
-        <Button @click="handleRemoveTask(taskId)" type="submit" class="rounded">Remove</Button>
+        <Button @click="" type="submit" class="rounded">Remove</Button>
         <DialogClose>
           <Button class="rounded">Close</Button>
         </DialogClose>
