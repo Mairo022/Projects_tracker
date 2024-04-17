@@ -1,14 +1,12 @@
 <script setup>
+import Project from "../components/project/Project";
 
 const route = useRoute()
 const id = parseInt(route.params.id)
-
-const projectView = "To-do";
 </script>
 
 <template>
   <div>
-    <ProjectHeader :projectId="id"/>
-    <ProjectContent :projectId="id"/>
+    <Project :id="id"/>
   </div>
 </template>
