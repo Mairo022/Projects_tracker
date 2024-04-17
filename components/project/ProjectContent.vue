@@ -1,14 +1,13 @@
 <script setup>
-const props = defineProps({
-  projectId: { type: Number, required: false}
+const { projectId, tasks } = defineProps({
+  projectId: { type: Number, required: true },
+  tasks: { type: Array, required: true }
 })
 
-const { data : projectTasks, error, pending } = await useFetch(`/api/projects/${props.projectId}`)
-
-const todos = projectTasks.value.filter(task => task.type === "todo" && !task.completed)
-const bugs = projectTasks.value.filter(task => task.type === "bug" && !task.completed)
-const ideas = projectTasks.value.filter(task => task.type === "idea" && !task.completed)
-const history = projectTasks.value.filter(task => task.completed === true)
+const todos = tasks?.filter(task => task.type === "todo" && !task.completed)
+const bugs = tasks?.filter(task => task.type === "bug" && !task.completed)
+const ideas = tasks?.filter(task => task.type === "idea" && !task.completed)
+const history = tasks?.filter(task => task.completed === true)
 
 let isTaskOpen = ref(false)
 let isAddTaskOpen = ref(false)
