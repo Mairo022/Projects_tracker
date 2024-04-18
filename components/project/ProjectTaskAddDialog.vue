@@ -6,14 +6,9 @@ const { id } = defineProps({
   isOpen: { type: Boolean, required: true },
   view: { type: String, required: true}
 })
-const emits = defineEmits(['update:openAddTask'])
 
 const title = ref("")
 const description = ref(null)
-
-function updateOpen() {
-  emits('update:openAddTask')
-}
 
 async function handleSubmit() {
   if (isEmptyString(title.value))
@@ -38,7 +33,7 @@ async function handleSubmit() {
 
 </script>
 <template>
-  <Dialog :open="isOpen" @update:open="updateOpen">
+  <Dialog :open="isOpen">
     <DialogContent class="max-w-base">
       <DialogHeader>
         <DialogTitle>Add {{view}}</DialogTitle>
