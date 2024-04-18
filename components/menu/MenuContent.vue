@@ -1,18 +1,10 @@
 <script setup>
 const { data : projects } = await useFetch('/api/projects')
 
-const views = ["To-do", "Bugs", "Ideas", "History"]
-
 let isOpen = ref(false)
 let inputProjectName = ""
 
-let projectView = ref()
-
 let dialogDescriptionData = ref({class: "", text: ""})
-
-function updateProjectView(view) {
-  projectView.value = view
-}
 
 function updateOpenState() {
   isOpen.value = !isOpen.value
@@ -92,10 +84,4 @@ async function handleAddProjectSubmit() {
       </SelectContent>
     </Select>
   </div>
-  <RadioGroup class="px-1" default-value="option-one" :modelValue="projectView" @update:modelValue="updateProjectView">
-    <div v-for="view in views" class="flex items-center space-x-2 h-5">
-      <RadioGroupItem :id="view" :value="view" />
-      <Label class="cursor-pointer w-full" :for="view">{{view}}</Label>
-    </div>
-  </RadioGroup>
 </template>

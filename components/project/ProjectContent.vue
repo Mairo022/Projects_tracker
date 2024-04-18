@@ -1,25 +1,25 @@
 <script setup>
 import formatTime from "../../utils/formatTime";
+import views from "../../data/views";
+import {categoriseTasks, getViewLabel} from "./utils";
 
 const props = defineProps({
   projectId: { type: Number, required: true },
   tasks: { type: Array, required: true }
 })
 
-const id = props.projectId
-const tasks = props.tasks
+const tasksCategorised = categoriseTasks(props.tasks)
 
-const todos = tasks?.filter(task => task.type === "todo" && !task.completed)
-const bugs = tasks?.filter(task => task.type === "bug" && !task.completed)
-const ideas = tasks?.filter(task => task.type === "idea" && !task.completed)
-const history = tasks?.filter(task => task.completed === true)
+const activeView = ref(views[0])
+const viewLabel = ref(getViewLabel(activeView.value))
+const renderedTasks = ref(tasksCategorised[activeView.value])
 
 const editTaskProps = reactive({})
 const isOpenEditTask = ref(false)
 const isOpenAddTask = ref(false)
 
 function onTaskClick(id) {
-  const task = todos.find(item => item.id === id)
+  const task = tasksCategorised[activeView.value].find(item => item.id === id)
 
   editTaskProps.title = task.title
   editTaskProps.description = task.description
@@ -36,15 +36,28 @@ function updateOpenAddTask() {
   isOpenAddTask.value = !isOpenAddTask.value
 }
 
+function updateActiveView(view) {
+  renderedTasks.value = tasksCategorised[view]
+  activeView.value = view
+  viewLabel.value = getViewLabel(view)
+}
 </script>
 <template>
-  <div class="text-base border-b-2 border-[#36363C] px-1 pb-2 mt-[-7px] mb-5">
-    <h3 class="inline-block font-medium text-lg text-[#DDD] mb-1">{{}}</h3>
-    <Button @click="updateOpenAddTask" class="float-right hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
-      + Add task
+  <div class="flex gap-3 text-base items-center mt-3 mb-2">
+    <Button
+        v-for="view in views"
+        @click="updateActiveView(view)"
+        variant="outline"
+        class="h-[30px] rounded-[16px] text-s text-secondary bg-transparent"
+        :class="{'bg-[#014c69] border-[#00000033] text-secondary': activeView === view}"
+    >
+      {{view}}
+    </Button>
+    <Button @click="updateOpenAddTask" class="ml-auto hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
+      + Add {{viewLabel}}
     </Button>
   </div>
-  <Table class="w-[98%] mx-auto table-fixed" >
+  <Table class="mx-auto table-fixed">
     <TableHeader>
       <TableRow class="hover:bg-transparent">
         <TableHead class="px-2 text-[#AAAAAA] border-[#36363C] border-b-2">
@@ -57,7 +70,7 @@ function updateOpenAddTask() {
       </TableRow>
     </TableHeader>
     <TableBody class="text-base">
-      <TableRow v-for="item in todos" :data-id="item.id" class="border-0 leading-[14px]">
+      <TableRow v-for="item in renderedTasks" :data-id="item.id" class="border-0 leading-[14px]">
         <TableCell class="px-3 border-b-2 cursor-pointer text-primary rounded-l-[4px]" @click="onTaskClick(item.id)">
           {{item.title}}
         </TableCell>
@@ -70,13 +83,13 @@ function updateOpenAddTask() {
   </Table>
   <ProjectTaskEditDialog
       :task="editTaskProps"
-      :projectID="id"
+      :projectID="projectId"
       :isOpen="isOpenEditTask"
       @update:open="updateOpenEditTask"
   />
   <ProjectTaskAddDialog
-      view="task"
-      :id="id"
+      :view="viewLabel"
+      :id="projectId"
       :isOpen="isOpenAddTask"
       @update:open="updateOpenAddTask"
   />
