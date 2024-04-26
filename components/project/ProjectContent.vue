@@ -48,23 +48,23 @@ function updateActiveView(view) {
         v-for="view in views"
         @click="updateActiveView(view)"
         variant="outline"
-        class="h-[30px] rounded-[16px] text-s text-secondary bg-transparent"
-        :class="{'bg-[#014c69] border-[#00000033] text-secondary': activeView === view}"
+        class="h-[30px] rounded-[16px] text-s"
+        :class="{'bg-accent font-semibold': activeView === view}"
     >
       {{view}}
     </Button>
-    <Button @click="updateOpenAddTask" class="ml-auto hover:bg-muted/50 px-2 mt-[-0.40rem] text-[#B9B9B9] rounded-t-[2px] bg-transparent">
-      + Add {{viewLabel}}
+    <Button @click="updateOpenAddTask" class="ml-auto hover:bg-muted/50 px-2 text-tertiary rounded bg-transparent">
+      New {{viewLabel}}
     </Button>
   </div>
   <Table class="mx-auto table-fixed">
     <TableHeader>
       <TableRow class="hover:bg-transparent">
-        <TableHead class="px-2 text-[#AAAAAA] border-[#36363C] border-b-2">
+        <TableHead class="px-2 text-secondary border-[#36363C] border-b-2">
           Title
         </TableHead>
-        <TableHead class="px-3 text-[#AAAAAA] text-right w-[100px] border-[#36363C] border-b-2">Created</TableHead>
-        <TableHead class="px-3 text-[#AAAAAA] text-right w-[100px] border-[#36363C] border-b-2">
+        <TableHead class="px-3 text-secondary text-right w-[100px] border-[#36363C] border-b-2">Created</TableHead>
+        <TableHead class="px-3 text-secondary text-right w-[100px] border-[#36363C] border-b-2">
           Done
         </TableHead>
       </TableRow>

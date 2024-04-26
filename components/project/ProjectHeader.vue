@@ -13,7 +13,7 @@ function updateOpen() {
 <template>
   <header class="flex items-center mt-[-16px]">
     <h2>
-      <Button @click="updateOpen" variant="ghost" class="text-base font-bold rounded text-secondary relative left-[-17px]">
+      <Button @click="updateOpen" variant="ghost" class="text-base font-bold rounded text-secondary relative left-[-16px]">
         {{data.title}}
       </Button>
     </h2>

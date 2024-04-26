@@ -4,7 +4,7 @@
 
 @layer base {
   :root {
-    --background: 240 5.2% 6.08%;
+    --background: 240 6% 17%;
     --foreground: 240 12% 82%;
 
     --muted: 240 8% 27.36%;
@@ -19,14 +19,16 @@
     --border: 240 8% 27.36%;
     --input: 240 8% 27.36%;
 
-    --primary: 240 12% 90%;
+    --primary: 240 12% 86%;
     --primary-foreground: 240 0.8% 7.6%;
 
-    --secondary: 240 0% 52%;
+    --secondary: 240 0% 62%;
     --secondary-foreground: 240 0.8% 98.8%;
 
+    --tertiary: 240 0% 42%;
+
     --accent: 240 8% 27.36%;
-    --accent-foreground: 240 0.8% 98.8%;
+    --accent-foreground: 240 0% 80%;
 
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 240 0.8% 98.8%;
@@ -34,6 +36,8 @@
     --ring: 240 8% 76%;
 
     --link-hover: 217 60% 62%;
+
+    --radius: 6px;
   }
 
   .dark {
