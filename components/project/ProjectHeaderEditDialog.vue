@@ -15,7 +15,7 @@ function updateOpen() {
   emits('update:open')
 }
 
-async function handleSubmit() {
+async function handleSave() {
   if (isEmptyString(title.value))
     return
 
@@ -36,6 +36,21 @@ async function handleSubmit() {
   }
 }
 
+async function handleDelete() {
+  try {
+    await $fetch("/api/projects", {
+      method: "delete",
+      body: {
+        id: projectData.id,
+      }
+    })
+
+    location.assign(location.origin)
+  } catch (e) {
+    console.log(e.statusMessage)
+  }
+}
+
 </script>
 <template>
   <Dialog :open="isOpen" @update:open="updateOpen">
@@ -48,11 +63,12 @@ async function handleSubmit() {
           <Input class="rounded" v-model="source" id="source" placeholder="GitHub"/>
         </div>
       </DialogHeader>
-      <DialogFooter>
+      <DialogFooter class="gap-2">
+        <Button @click="handleDelete" type="submit" class="rounded">Delete</Button>
         <DialogClose>
           <Button class="rounded">Close</Button>
         </DialogClose>
-        <Button @click="handleSubmit" type="submit" class="rounded">Save changes</Button>
+        <Button @click="handleSave" type="submit" class="rounded">Save changes</Button>
       </DialogFooter>
     </DialogContent>
   </Dialog>
