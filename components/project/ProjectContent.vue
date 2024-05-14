@@ -23,6 +23,7 @@ function onTaskClick(id) {
 
   editTaskProps.title = task.title
   editTaskProps.description = task.description
+  editTaskProps.completed = task.completed
   editTaskProps.id = task.id
 
   updateOpenEditTask()
@@ -64,9 +65,6 @@ function updateActiveView(view) {
           Title
         </TableHead>
         <TableHead class="px-3 text-secondary text-right w-[100px] border-[#36363C] border-b-2">Created</TableHead>
-        <TableHead class="px-3 text-secondary text-right w-[100px] border-[#36363C] border-b-2">
-          Done
-        </TableHead>
       </TableRow>
     </TableHeader>
     <TableBody class="text-base">
@@ -75,9 +73,6 @@ function updateActiveView(view) {
           {{item.title}}
         </TableCell>
         <TableCell class="px-3 border-b-2 text-right text-secondary">{{formatTime(item.created_at)}}</TableCell>
-        <TableCell class="px-3 border-b-2 text-right text-[#6ec075] rounded-r-[4px] cursor-pointer transition-colors hover:bg-muted/50">
-          ✓
-        </TableCell>
       </TableRow>
     </TableBody>
   </Table>
