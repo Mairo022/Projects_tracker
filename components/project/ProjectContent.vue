@@ -43,7 +43,7 @@ function updateActiveView(view) {
 }
 </script>
 <template>
-  <div class="flex gap-3 text-base items-center mt-3 mb-2">
+  <div class="flex gap-3 text-base items-center mt-3 mb-2 flex-wrap">
     <Button
         v-for="view in views"
         @click="updateActiveView(view)"

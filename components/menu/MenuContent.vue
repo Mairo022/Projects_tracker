@@ -27,7 +27,7 @@ watch(() => route.params.id, () => {
   </ul>
   <Button @click="updateOpenState"
           variant="ghost"
-          class="rounded mt-2 text-tertiary hover:bg-muted/50"
+          class="rounded mt-3 text-tertiary hover:bg-muted/50"
   >
     Add project
   </Button>
