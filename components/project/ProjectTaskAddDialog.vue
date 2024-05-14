@@ -37,14 +37,14 @@ async function handleSubmit() {
     <DialogContent class="max-w-base">
       <DialogHeader>
         <DialogTitle>Add {{view}}</DialogTitle>
-        <div class="flex flex-col items-center gap-4 mb-2">
-          <Input class="rounded" v-model="title" placeholder="Title" />
-          <Textarea rows="4" v-model="description" class="resize-none rounded" placeholder="Description"/>
-        </div>
       </DialogHeader>
-      <DialogFooter>
-        <DialogClose>
-          <Button class="rounded">Close</Button>
+      <div class="flex flex-col items-center gap-3 my-2">
+        <Input class="rounded" v-model="title" placeholder="Title" />
+        <Textarea rows="4" v-model="description" class="resize-none rounded" placeholder="Description"/>
+      </div>
+      <DialogFooter class="gap-4">
+        <DialogClose class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded">
+          Close
         </DialogClose>
         <Button @click="handleSubmit" type="submit" class="rounded">Add</Button>
       </DialogFooter>

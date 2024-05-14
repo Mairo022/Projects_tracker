@@ -33,14 +33,14 @@ async function handleRemove() {
     <DialogContent class="max-w-base">
       <DialogHeader>
         <DialogTitle>{{task.title}}</DialogTitle>
-        <div class="flex flex-col items-center gap-4 mb-2">
-          <p>{{task.description}}</p>
-        </div>
       </DialogHeader>
+      <div class="flex flex-col items-center gap-3 my-2">
+        <p>{{task.description}}</p>
+      </div>
       <DialogFooter>
         <Button @click="handleRemove" type="submit" class="rounded">Remove</Button>
-        <DialogClose>
-          <Button class="rounded">Close</Button>
+        <DialogClose class="inline-flex items-center justify-center whitespace-nowrap text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2 rounded">
+          Close
         </DialogClose>
       </DialogFooter>
     </DialogContent>
