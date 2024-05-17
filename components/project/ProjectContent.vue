@@ -8,7 +8,7 @@ const props = defineProps({
   tasks: { type: Array, required: true }
 })
 
-const tasksCategorised = categoriseTasks(props.tasks)
+const tasksCategorised = reactive(categoriseTasks(props.tasks))
 
 const activeView = ref(views[0])
 const viewLabel = ref(getViewLabel(activeView.value))
@@ -42,6 +42,13 @@ function updateActiveView(view) {
   activeView.value = view
   viewLabel.value = getViewLabel(view)
 }
+
+function updateTask(task) {
+  const taskIndex = tasksCategorised[activeView.value].findIndex(item => item.id === task.id)
+  const taskOriginal = tasksCategorised[activeView.value][taskIndex]
+  tasksCategorised[activeView.value][taskIndex] = {...taskOriginal, ...task}
+}
+
 </script>
 <template>
   <div class="flex gap-3 text-base items-center mt-3 mb-2 flex-wrap">
@@ -81,6 +88,7 @@ function updateActiveView(view) {
       :projectID="projectId"
       :isOpen="isOpenEditTask"
       @update:open="updateOpenEditTask"
+      @update:task="updateTask"
   />
   <ProjectTaskAddDialog
       :view="viewLabel"
